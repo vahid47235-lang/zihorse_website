@@ -3,15 +3,19 @@ import { PageHeader, StatusPill } from "@/components/admin/ui";
 import { Table, Thead, Th, Tbody, Tr, Td } from "@/components/admin/table";
 import { Button } from "@/components/ui/button";
 import { adminProducts } from "@/lib/admin-mock-data";
+import { listImportedProducts } from "@/lib/import/publish";
 import { formatToman } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 
-export default function AdminProductsPage() {
+export default async function AdminProductsPage() {
+  const importedProducts = await listImportedProducts();
+  const allProducts = [...importedProducts, ...adminProducts];
+
   return (
     <div>
       <PageHeader
         title="محصولات"
-        description={`${adminProducts.length} محصول در کاتالوگ`}
+        description={`${allProducts.length} محصول در کاتالوگ (${importedProducts.length} مورد از استودیوی واردسازی هوشمند)`}
         actions={
           <>
             <Button href="/admin/products/import" variant="accent" size="sm">
@@ -53,7 +57,7 @@ export default function AdminProductsPage() {
           <Th>آخرین بروزرسانی</Th>
         </Thead>
         <Tbody>
-          {adminProducts.map((product) => (
+          {allProducts.map((product) => (
             <Tr key={product.id}>
               <Td>
                 <input type="checkbox" aria-label={`انتخاب ${product.title}`} />
@@ -66,7 +70,11 @@ export default function AdminProductsPage() {
               <Td className="font-mono text-xs text-midnight-500">{product.sku}</Td>
               <Td>{product.brand}</Td>
               <Td>{product.category}</Td>
-              <Td>{formatToman(product.priceToman)}</Td>
+              <Td>
+                {product.priceToman > 0 ? formatToman(product.priceToman) : (
+                  <span className="text-xs text-warning">نیاز به ثبت دستی قیمت</span>
+                )}
+              </Td>
               <Td className={product.stock === 0 ? "text-error" : undefined}>{product.stock}</Td>
               <Td>
                 <StatusPill status={product.status} />

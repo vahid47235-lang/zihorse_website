@@ -1,68 +1,58 @@
-"use client";
-
-import { useState } from "react";
 import { PageHeader } from "@/components/admin/ui";
 import { Table, Thead, Th, Tbody, Tr, Td } from "@/components/admin/table";
-import { Badge } from "@/components/ui/badge";
-import { adminRoles, paymentProviders as initialProviders } from "@/lib/admin-mock-data";
-import { cn } from "@/lib/utils";
+import { PaymentGatewaysPanel } from "@/components/admin/payment-gateways-panel";
+import { FxScheduleForm } from "./fx-schedule-form";
+import { adminRoles, paymentProviders } from "@/lib/admin-mock-data";
+import { getFxSchedule } from "@/lib/fx/schedule";
+import { getFxRateHistory } from "@/lib/fx/bonbast";
 
-export default function AdminSettingsPage() {
-  const [providers, setProviders] = useState(initialProviders);
-
-  function toggleProvider(id: string) {
-    setProviders((prev) => prev.map((p) => (p.id === id ? { ...p, enabled: !p.enabled } : p)));
-  }
+export default async function AdminSettingsPage() {
+  const [schedule, fxHistory] = await Promise.all([getFxSchedule(), getFxRateHistory(10)]);
+  const latest = fxHistory[0];
 
   return (
     <div>
-      <PageHeader title="تنظیمات" description="درگاه‌های پرداخت، نقش‌ها و دسترسی‌ها." />
+      <PageHeader title="تنظیمات" description="درگاه‌های پرداخت، نقش‌ها، دسترسی‌ها و منابع خزش خودکار." />
 
       <h2 className="mb-3 text-sm font-semibold text-midnight-900">درگاه‌های پرداخت</h2>
-      <Table>
-        <Thead>
-          <Th>درگاه</Th>
-          <Th>وضعیت</Th>
-          <Th>حالت</Th>
-          <Th>اولویت نمایش</Th>
-          <Th>پرداخت اعتباری</Th>
-          <Th>فعال/غیرفعال</Th>
-        </Thead>
-        <Tbody>
-          {providers.map((p) => (
-            <Tr key={p.id}>
-              <Td className="font-medium text-midnight-900">{p.name}</Td>
-              <Td>
-                <Badge tone={p.enabled ? "success" : "neutral"}>{p.enabled ? "فعال" : "غیرفعال"}</Badge>
-              </Td>
-              <Td>
-                <Badge tone={p.mode === "زنده" ? "accent" : "warning"}>{p.mode}</Badge>
-              </Td>
-              <Td>{p.priority}</Td>
-              <Td>{p.installments ? "دارد" : "ندارد"}</Td>
-              <Td>
-                <button
-                  role="switch"
-                  aria-checked={p.enabled}
-                  aria-label={`فعال یا غیرفعال کردن ${p.name}`}
-                  onClick={() => toggleProvider(p.id)}
-                  className={cn(
-                    "relative h-6 w-11 rounded-full transition-colors",
-                    p.enabled ? "bg-success" : "bg-midnight-200"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
-                      p.enabled ? "right-0.5" : "right-5"
-                    )}
-                  />
-                </button>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+      <PaymentGatewaysPanel initialProviders={paymentProviders} />
+
+      <h2 className="mb-3 mt-8 text-sm font-semibold text-midnight-900">نرخ ارز — خزش خودکار bonbast.com</h2>
+      <div className="rounded-sm border border-neutral-medium bg-ivory-50 p-4">
+        <FxScheduleForm initialTimes={schedule.timesLocal} />
+        <p className="mt-3 text-xs text-midnight-400">
+          این بازه‌ها روی سرور ذخیره می‌شوند و مسیر <code dir="ltr">/api/cron/fx-rates</code> هر ۱۵ دقیقه توسط
+          Vercel Cron بررسی می‌کند که آیا به یکی از این ساعت‌ها رسیده‌ایم یا نه — بنابراین تغییر ساعت از همین‌جا
+          نیاز به استقرار مجدد ندارد.
+        </p>
+      </div>
+
+      {latest && (
+        <div className="mt-4">
+          <p className="mb-2 text-xs text-midnight-500">
+            آخرین دریافت: {new Date(latest.fetchedAt).toLocaleString("fa-IR")}
+            {latest.error && <span className="mr-2 text-error"> — خطا: {latest.error}</span>}
+          </p>
+          {Object.keys(latest.rates).length > 0 && (
+            <Table>
+              <Thead>
+                <Th>ارز</Th>
+                <Th>خرید (ریال)</Th>
+                <Th>فروش (ریال)</Th>
+              </Thead>
+              <Tbody>
+                {Object.entries(latest.rates).map(([code, rate]) => (
+                  <Tr key={code}>
+                    <Td className="font-mono font-medium text-midnight-900">{code}</Td>
+                    <Td>{rate.buy.toLocaleString("fa-IR")}</Td>
+                    <Td>{rate.sell.toLocaleString("fa-IR")}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          )}
+        </div>
+      )}
 
       <h2 className="mb-3 mt-8 text-sm font-semibold text-midnight-900">نقش‌ها و دسترسی‌ها</h2>
       <Table>
