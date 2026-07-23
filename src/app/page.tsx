@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MediaPlaceholder } from "@/components/ui/media-placeholder";
 import { ProductCard } from "@/components/product/product-card";
@@ -17,9 +18,17 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="relative">
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-midnight-900 via-midnight-800 to-saddle-700 md:aspect-[16/7]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(154,116,71,0.25),transparent_55%)]" />
-          <div className="container-editorial relative z-10 flex h-full flex-col items-start justify-center gap-5 py-16 md:max-w-xl">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-midnight-900 md:aspect-[16/7]">
+          <Image
+            src="/images/hero/zihorse-hero-rider.webp"
+            alt="سوارکار همراه با اسب، پوشیده با تجهیزات زی‌هورس در نور غروب"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-midnight-950/90 via-midnight-950/30 to-transparent" />
+          <div className="container-editorial relative z-10 flex h-full max-w-lg flex-col items-start justify-end gap-5 pb-14 pt-16 md:pb-16">
             <span className="text-xs font-medium tracking-widest text-bronze-300">
               مجموعه پاییز و زمستان
             </span>
