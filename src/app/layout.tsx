@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "زی‌هورس، مجموعه‌ای منتخب از پوشاک و تجهیزات حرفه‌ای سوارکاری و مراقبت از اسب برای سوارکاران و اصطبل‌های ایرانی.",
   icons: {
-    icon: "/logo/zihorse-mark.svg",
+    icon: "/logo/zihorse-icon.png",
   },
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-ivory-100 text-midnight-900">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pt-16 md:pt-20">{children}</main>
         <SiteFooter />
       </body>
     </html>

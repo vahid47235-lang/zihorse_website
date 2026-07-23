@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative">
+      <section className="relative -mt-16 md:-mt-20">
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-midnight-900 md:aspect-[16/7]">
           <Image
             src="/images/hero/zihorse-hero-rider.webp"

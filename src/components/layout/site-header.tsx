@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { categories } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
@@ -18,12 +19,35 @@ const primaryNav = [
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    if (!isHome) return;
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome]);
+
+  const transparentMode = isHome && !scrolled && !menuOpen;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-medium bg-ivory-100/95 backdrop-blur-sm">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        transparentMode
+          ? "border-b border-transparent bg-transparent"
+          : "border-b border-neutral-medium bg-ivory-100/95 backdrop-blur-sm"
+      )}
+    >
       <div className="container-editorial flex h-16 items-center justify-between gap-4 md:h-20">
         <button
-          className="md:hidden flex h-11 w-11 items-center justify-center"
+          className={cn(
+            "md:hidden flex h-11 w-11 items-center justify-center transition-colors duration-300",
+            transparentMode ? "text-ivory-50" : "text-midnight-900"
+          )}
           aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
           onClick={() => setMenuOpen((v) => !v)}
         >
@@ -32,12 +56,12 @@ export function SiteHeader() {
 
         <Link href="/" className="flex items-center" aria-label="زی‌هورس">
           <Image
-            src="/logo/zihorse-logo-horizontal.svg"
+            src="/logo/zihorse-logo.png"
             alt="زی‌هورس"
             width={168}
-            height={49}
+            height={135}
             priority
-            className="h-9 w-auto md:h-11"
+            className="h-12 w-auto md:h-16"
           />
         </Link>
 
@@ -46,7 +70,12 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-midnight-700 transition-colors hover:text-bronze-600"
+              className={cn(
+                "text-sm font-medium transition-colors duration-300",
+                transparentMode
+                  ? "text-ivory-100 hover:text-bronze-300"
+                  : "text-midnight-700 hover:text-bronze-600"
+              )}
             >
               {item.label}
             </Link>
@@ -54,13 +83,28 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1">
-          <IconButton label="جست‌وجو" icon={Search} />
-          <IconButton label="حساب کاربری" icon={User} className="hidden sm:inline-flex" />
-          <IconButton label="علاقه‌مندی‌ها" icon={Heart} className="hidden sm:inline-flex" />
+          <IconButton label="جست‌وجو" icon={Search} transparentMode={transparentMode} />
+          <IconButton
+            label="حساب کاربری"
+            icon={User}
+            transparentMode={transparentMode}
+            className="hidden sm:inline-flex"
+          />
+          <IconButton
+            label="علاقه‌مندی‌ها"
+            icon={Heart}
+            transparentMode={transparentMode}
+            className="hidden sm:inline-flex"
+          />
           <Link
             href="/cart"
             aria-label="سبد خرید"
-            className="relative flex h-11 w-11 items-center justify-center text-midnight-900 hover:text-bronze-600"
+            className={cn(
+              "relative flex h-11 w-11 items-center justify-center transition-colors duration-300",
+              transparentMode
+                ? "text-ivory-50 hover:text-bronze-300"
+                : "text-midnight-900 hover:text-bronze-600"
+            )}
           >
             <ShoppingBag className="h-5 w-5" />
             <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-bronze-500 text-[10px] text-ivory-50">
@@ -100,16 +144,19 @@ function IconButton({
   label,
   icon: Icon,
   className,
+  transparentMode,
 }: {
   label: string;
   icon: typeof Search;
   className?: string;
+  transparentMode: boolean;
 }) {
   return (
     <button
       aria-label={label}
       className={cn(
-        "inline-flex h-11 w-11 items-center justify-center text-midnight-900 hover:text-bronze-600",
+        "inline-flex h-11 w-11 items-center justify-center transition-colors duration-300",
+        transparentMode ? "text-ivory-50 hover:text-bronze-300" : "text-midnight-900 hover:text-bronze-600",
         className
       )}
     >
