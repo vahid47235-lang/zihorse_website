@@ -1,6 +1,7 @@
 import "server-only";
 import crypto from "crypto";
 import { cookies } from "next/headers";
+import { SESSION_COOKIE } from "./auth-constants";
 
 /**
  * Minimal single-account session auth for the admin panel.
@@ -11,7 +12,6 @@ import { cookies } from "next/headers";
  * checks for its presence.
  */
 
-export const SESSION_COOKIE = "zh_admin_session";
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000; // 8 hours
 const SECRET = process.env.ADMIN_SESSION_SECRET ?? "zihorse-dev-secret-change-me";
 

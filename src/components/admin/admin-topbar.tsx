@@ -1,6 +1,7 @@
-import { Bell, Search } from "lucide-react";
+import { Bell, LogOut, Search } from "lucide-react";
+import { logout } from "@/app/login/actions";
 
-export function AdminTopbar() {
+export function AdminTopbar({ name, role }: { name: string; role: string }) {
   return (
     <header className="flex h-16 items-center justify-between gap-4 border-b border-neutral-medium bg-ivory-50 px-4 md:px-6">
       <label className="hidden max-w-sm flex-1 items-center gap-2 rounded-sm border border-neutral-medium bg-ivory-100 px-3 py-2 text-sm text-midnight-400 sm:flex">
@@ -20,13 +21,22 @@ export function AdminTopbar() {
         </button>
         <div className="flex items-center gap-2 border-r border-neutral-medium pr-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-bronze-500 text-sm font-semibold text-ivory-50">
-            ز
+            {name.charAt(0)}
           </div>
           <div className="hidden text-right sm:block">
-            <p className="text-sm font-medium text-midnight-900">زهرا کریمی</p>
-            <p className="text-xs text-midnight-500">مدیر محصول</p>
+            <p className="text-sm font-medium text-midnight-900">{name}</p>
+            <p className="text-xs text-midnight-500">{role}</p>
           </div>
         </div>
+        <form action={logout}>
+          <button
+            type="submit"
+            aria-label="خروج از حساب"
+            className="flex h-10 w-10 items-center justify-center rounded-sm text-midnight-500 hover:bg-ivory-100 hover:text-error"
+          >
+            <LogOut className="h-5 w-5" />
+          </button>
+        </form>
       </div>
     </header>
   );
