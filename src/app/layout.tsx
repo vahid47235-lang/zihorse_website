@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 
 const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
@@ -33,11 +31,7 @@ export default function RootLayout({
       dir="rtl"
       className={`${vazirmatn.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ivory-100 text-midnight-900">
-        <SiteHeader />
-        <main className="flex-1 pt-16 md:pt-20">{children}</main>
-        <SiteFooter />
-      </body>
+      <body className="min-h-full bg-ivory-100 text-midnight-900">{children}</body>
     </html>
   );
 }
