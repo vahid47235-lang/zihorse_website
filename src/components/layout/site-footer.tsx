@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const footerGroups: { title: string; links: { label: string; href: string }[] }[] = [
   {
@@ -39,7 +40,13 @@ export function SiteFooter() {
     <footer className="border-t border-neutral-medium bg-midnight-900 text-ivory-200">
       <div className="container-editorial grid gap-10 py-12 md:grid-cols-5 md:py-16">
         <div className="md:col-span-1">
-          <span className="font-display text-xl font-bold text-ivory-50">زی‌هورس</span>
+          <Image
+            src="/logo/zihorse-logo-horizontal.svg"
+            alt="زی‌هورس"
+            width={168}
+            height={49}
+            className="h-10 w-auto"
+          />
           <p className="mt-3 text-sm leading-7 text-ivory-300">
             بوتیک تخصصی سوارکاری برای سوارکاران و اسب‌های ایران.
           </p>

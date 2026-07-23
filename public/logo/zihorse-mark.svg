@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-labelledby="zihorseMarkTitle">
+  <title id="zihorseMarkTitle">نشان زی‌هورس</title>
+  <defs>
+    <linearGradient id="zh-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3e2bc" />
+      <stop offset="45%" stop-color="#c8a476" />
+      <stop offset="100%" stop-color="#7d5d38" />
+    </linearGradient>
+    <linearGradient id="zh-gold-soft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eeddc9" />
+      <stop offset="100%" stop-color="#b48c5b" />
+    </linearGradient>
+  </defs>
+
+  <!-- wing / feather flourish -->
+  <g fill="url(#zh-gold-soft)">
+    <path d="M85,55 C76,35 74,13 85,-8 C94,17 97,42 91,55 Z" opacity="0.55" transform="rotate(-26 85 55)" />
+    <path d="M85,55 C76,35 74,13 85,-8 C94,17 97,42 91,55 Z" opacity="0.78" transform="rotate(-8 85 55)" />
+    <path d="M85,55 C76,35 74,13 85,-8 C94,17 97,42 91,55 Z" opacity="1" transform="rotate(11 85 55)" />
+  </g>
+
+  <!-- Z monogram -->
+  <path
+    d="M28,55 L88,55 L28,112 L88,112"
+    fill="none"
+    stroke="url(#zh-gold)"
+    stroke-width="15"
+    stroke-linecap="square"
+    stroke-linejoin="round"
+  />
+</svg>

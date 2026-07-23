@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { categories } from "@/lib/mock-data";
@@ -29,8 +30,15 @@ export function SiteHeader() {
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
-        <Link href="/" className="font-display text-xl font-bold tracking-tight text-midnight-900 md:text-2xl">
-          زی‌هورس
+        <Link href="/" className="flex items-center" aria-label="زی‌هورس">
+          <Image
+            src="/logo/zihorse-logo-horizontal.svg"
+            alt="زی‌هورس"
+            width={168}
+            height={49}
+            priority
+            className="h-9 w-auto md:h-11"
+          />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex" aria-label="ناوبری اصلی">

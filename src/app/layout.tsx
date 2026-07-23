@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   },
   description:
     "زی‌هورس، مجموعه‌ای منتخب از پوشاک و تجهیزات حرفه‌ای سوارکاری و مراقبت از اسب برای سوارکاران و اصطبل‌های ایرانی.",
+  icons: {
+    icon: "/logo/zihorse-mark.svg",
+  },
 };
 
 export default function RootLayout({
